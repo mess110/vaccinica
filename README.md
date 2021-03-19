@@ -1,6 +1,6 @@
 # Vaccin
 
-http://bit.ly/datevaccinare
+http://bit.ly/vaccinica
 
 A way to explore the https://data.gov.ro/dataset/transparenta-covid data.
 
