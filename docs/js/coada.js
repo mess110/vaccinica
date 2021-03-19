@@ -43,12 +43,18 @@ const initMultiSelect = (name, items, filters, dates, rawData) => {
   });
 }
 
-const datasetFrom = (dates, inputData, label) => {
+const datasetFrom = (dates, inputData, filters, label) => {
   array = [];
   dates.forEach(date => {
     let value = inputData
       .filter(e => e['Data vaccinării'] === date)
-      .map(e => e['Doze administrate'])
+      .map(e => {
+        if (filters.doses.length === 0 || filters.doses.length === 2) {
+          return e['Doze administrate']
+        } else {
+          return e[filters.doses[0]]
+        }
+      })
       .sum()
     array.push(value)
   })
@@ -95,10 +101,10 @@ const updateChart = (dates, rawData, filters) => {
     data: {
         labels: Array.from(dates),
         datasets: [
-          datasetFrom(dates, dataCity, 'Total'),
-          datasetFrom(dates, dataPB, 'Pfizer - BIONTech'),
-          datasetFrom(dates, dataM, 'Moderna'),
-          datasetFrom(dates, dataAZ, 'Astra-Zeneca'),
+          datasetFrom(dates, dataCity, filters, 'Total'),
+          datasetFrom(dates, dataPB, filters, 'Pfizer - BIONTech'),
+          datasetFrom(dates, dataM, filters, 'Moderna'),
+          datasetFrom(dates, dataAZ, filters, 'Astra-Zeneca'),
         ]
     },
     options: {
@@ -123,6 +129,7 @@ const init = async () => {
   let dates = new Set();
   let vaccines = new Set();
   let categories = new Set();
+  let doses = new Set(['Doza 1', 'Doza 2']);
 
   rawData.forEach(e => {
     // don't ask - related to lc_select, try selecting ACADEMIA NAVALĂ „MIRCEA CEL BĂTRÂN without this
@@ -141,12 +148,14 @@ const init = async () => {
     'cities': [],
     'centers': [],
     'categories': [],
+    'doses': [],
   }
 
   initMultiSelect('counties', counties, filters, dates, rawData)
   initMultiSelect('cities', cities, filters, dates, rawData)
   initMultiSelect('centers', centers, filters, dates, rawData)
   initMultiSelect('categories', categories, filters, dates, rawData)
+  initMultiSelect('doses', doses, filters, dates, rawData)
 
   updateChart(dates, rawData, filters)
 
