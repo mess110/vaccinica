@@ -3,7 +3,19 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <title>vaccin</title>
+        <meta name="title" content="vaccinica">
+        <meta name="description" content="Statistici vaccinare Romania">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://mess110.github.io/vaccinica/">
+        <meta property="og:title" content="vaccinica">
+        <meta property="og:description" content="Statistici vaccinare Romania">
+
+        <meta property="twitter:url" content="https://mess110.github.io/vaccinica/">
+        <meta property="twitter:title" content="vaccinica">
+        <meta property="twitter:description" content="Statistici vaccinare Romania">
+
+        <title>vaccinica</title>
 
         <link rel="stylesheet" href="css/light.css">
         <style type="text/css" media="all">
@@ -31,7 +43,11 @@
                 display: none;
             }
 
-            form {
+            #content > h1 {
+                text-align: center;
+            }
+
+            #content > form {
                 padding-bottom: 10px;
             }
         </style>
@@ -42,6 +58,8 @@
         </div>
 
         <div id="content">
+            <h1>Statistici vaccinare România</h1>
+
             <div class="chart-container" style="position: relative; height:40vh; width:98vw">
                 <canvas id="myChart"></canvas>
             </div>
