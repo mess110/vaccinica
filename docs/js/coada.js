@@ -63,6 +63,7 @@ const datasetFrom = (dates, inputData, filters, label, hidden) => {
     label: label,
     data: array,
     hidden: hidden,
+    fill: false,
   }
 }
 
