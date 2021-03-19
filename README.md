@@ -1,5 +1,7 @@
 # Vaccin
 
+http://bit.ly/datevaccinare
+
 A way to explore the https://data.gov.ro/dataset/transparenta-covid data.
 
 Please review the code to help me fix potential mistakes.
