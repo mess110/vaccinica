@@ -36,14 +36,14 @@ const initMultiSelect = (name, items, filters, dates, rawData) => {
     },
     labels : [
         'căutare',
-        'add options',
-        'Select options ..',
+        'adaugă',
+        'alege',
         '.. nema ..',
     ],
   });
 }
 
-const datasetFrom = (dates, inputData, filters, label) => {
+const datasetFrom = (dates, inputData, filters, label, hidden) => {
   array = [];
   dates.forEach(date => {
     let value = inputData
@@ -62,12 +62,19 @@ const datasetFrom = (dates, inputData, filters, label) => {
   return {
     label: label,
     data: array,
+    hidden: hidden,
   }
 }
 
 const updateChart = (dates, rawData, filters) => {
+  let hidden = filters.hidden;
   if (chart !== undefined) {
-    console.log('destroy chart')
+    // the hidden state can be either directly on the dataset or in its
+    // _meta attribute so we check for both
+    hidden = chart.data.datasets.map(e => {
+      let firstVal = e._meta[Object.keys(e._meta)[0]].hidden;
+      return firstVal === null ? e.hidden : firstVal;
+    })
     chart.destroy();
   }
 
@@ -101,10 +108,10 @@ const updateChart = (dates, rawData, filters) => {
     data: {
         labels: Array.from(dates),
         datasets: [
-          datasetFrom(dates, dataCity, filters, 'Total'),
-          datasetFrom(dates, dataPB, filters, 'Pfizer - BIONTech'),
-          datasetFrom(dates, dataM, filters, 'Moderna'),
-          datasetFrom(dates, dataAZ, filters, 'Astra-Zeneca'),
+          datasetFrom(dates, dataCity, filters, 'Total', hidden[0]),
+          datasetFrom(dates, dataPB, filters, 'Pfizer - BIONTech', hidden[1]),
+          datasetFrom(dates, dataM, filters, 'Moderna', hidden[2]),
+          datasetFrom(dates, dataAZ, filters, 'Astra-Zeneca', hidden[3]),
         ]
     },
     options: {
@@ -149,6 +156,9 @@ const init = async () => {
     'centers': [],
     'categories': [],
     'doses': [],
+
+    // default hidden state for each vaccin line + total line
+    'hidden': Array.from(vaccines).map(e => false).concat(false)
   }
 
   initMultiSelect('counties', counties, filters, dates, rawData)
