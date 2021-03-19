@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>vaccin</title>
+
+        <link rel="stylesheet" href="css/light.css">
+        <style type="text/css" media="all">
+            .multiselect > ul {
+                padding-left: 0px;
+            }
+
+            #loader {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+                background-color: white;
+                z-index: 1;
+                text-align: center;
+            }
+
+            #github {
+                padding-top: 30px;
+                text-align: center;
+            }
+
+            #content {
+                display: none;
+            }
+
+            form {
+                padding-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loader">
+            <img src="img/loading.gif" />
+        </div>
+
+        <div id="content">
+            <div class="chart-container" style="position: relative; height:40vh; width:98vw">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <form>
+                <select name="counties" data-placeholder="Județ" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="cities" data-placeholder="Localitate" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="centers" data-placeholder="Nume centru" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="categories" data-placeholder="Grupa de risc" multiple>
+                    <!-- <option value="Categoria I">Categoria I</option> -->
+                    <!-- <option value="Categoria II">Categoria II</option> -->
+                    <!-- <option value="Categoria III">Categoria III</option> -->
+                </select>
+            </form>
+
+            <div id="github">
+                <a href="https://github.com/mess110/vaccin" target="_blank"><img src="img/github.png" /></a>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+        <script src="js/lc_select.min.js"></script>
+
+        <script src="js/coada.js"></script>
+    </body>
+</html>

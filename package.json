@@ -1,0 +1,15 @@
+{
+  "name": "vaccin",
+  "version": "1.0.0",
+  "description": "Present data from https://data.gov.ro/dataset/transparenta-covid",
+  "scripts": {
+    "download": "./scripts/download.sh",
+    "dl2json": "node scripts/dl2json.js",
+    "all": "yarn download && yarn dl2json"
+  },
+  "author": "mess110",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "convert-excel-to-json": "^1.7.0"
+  }
+}
