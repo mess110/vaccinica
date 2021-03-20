@@ -41,16 +41,21 @@
 
 
 
+.flex-container {
+    display: flex;
+}
 
-
-
+.flex-child {
+    flex: 1;
+    text-align: center;
+}
 
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
-  /* left: -50px; */
+  left: -20px;
 }
 
 .switch input {
@@ -62,17 +67,9 @@
 .switch > .text {
   position: relative;
   color: #484848;
-  left: 68px;
-  top: -10px;
   cursor: pointer;
-}
-
-.switch > .text2 {
-  position: relative;
-  color: #484848;
-  left: 42px;
-  top: 6px;
-  cursor: pointer;
+  left: 64px;
+  top: -8px;
 }
 
 .slider {

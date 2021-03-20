@@ -62,18 +62,24 @@
                 </select>
             </form>
 
-            <form style="text-align: center">
-                <label class="switch" style="left: -100px;">
-                    <input type="checkbox" onclick='toggleCumulative(this);'>
-                    <span class="slider round"></span>
-                    <span class="text">Cumulativ</span>
-                </label>
-                <label class="switch" style="top: -17px">
-                    <input type="checkbox" onclick='togglePie(this);'>
-                    <span class="slider round"></span>
-                    <span class="text2">Plăcintă</span>
-                </label>
-            </form>
+            <div class="flex-container">
+                <div class="flex-child magenta">
+                    <label class="switch">
+                        <input type="checkbox" onclick='toggleCumulative(this);'>
+                        <span class="slider round"></span>
+                        <span class="text">Cumulativ</span>
+                    </label>
+                </div>
+
+                <div class="flex-child green">
+                    <label class="switch">
+                        <input type="checkbox" onclick='togglePie(this);'>
+                        <span class="slider round"></span>
+                        <span class="text">Plăcintă</span>
+                    </label>
+                </div>
+
+            </div>
 
             <div id="github">
                 <a href="https://github.com/mess110/vaccin" target="_blank"><img src="img/github.png" /></a>
