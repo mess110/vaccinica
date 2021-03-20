@@ -1,9 +1,3 @@
-Set.prototype.addSafe = function (e) {
-  if (e !== '') {
-    this.add(e)
-  }
-}
-
 Array.prototype.sum = function () {
   return this.reduce((a, b) => {
     return a + b;
@@ -16,9 +10,9 @@ Array.prototype.includes = function(e) {
 
 // TODO: remove dates and rawData parms from here, its just a mess
 // maybe create a storage object somewhere
-const initMultiSelect = (name, items, filters, dates, rawData) => {
+const initMultiSelect = (name, db) => {
   let select = document.querySelector(`select[name="${name}"]`);
-  Array.from(items).sort().forEach(e => {
+  Array.from(db.getCollection(name)).sort().forEach(e => {
     let option = document.createElement('option');
     option.setAttribute('value', e);
     option.text = e;
@@ -32,8 +26,8 @@ const initMultiSelect = (name, items, filters, dates, rawData) => {
     autofocus_search: true,
     addit_classes : ['multiselect'],
     on_change : (new_value, target_field) => {
-      filters[name] = new_value;
-      updateChart(dates, rawData, filters)
+      db.getFilters()[name] = new_value;
+      updateChart(db);
     },
     labels : [
         'căutare',
@@ -68,7 +62,8 @@ const datasetFrom = (dates, inputData, filters, label, hidden) => {
   }
 }
 
-const updateChart = (dates, rawData, filters) => {
+const updateChart = (db) => {
+  let filters = db.getFilters();
   let hidden = filters.hidden;
   if (chart !== undefined) {
     // the hidden state can be either directly on the dataset or in its
@@ -80,7 +75,7 @@ const updateChart = (dates, rawData, filters) => {
     chart.destroy();
   }
 
-  let dataCity = rawData
+  let dataCity = db.getData();
 
   if (filters.counties.length > 0) {
     dataCity = dataCity.filter(e => filters.counties.includes(e['Județ']))
@@ -108,12 +103,12 @@ const updateChart = (dates, rawData, filters) => {
   chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: Array.from(dates),
+        labels: Array.from(db.getDates()),
         datasets: [
-          datasetFrom(dates, dataCity, filters, 'Total', hidden[0]),
-          datasetFrom(dates, dataPB, filters, 'Pfizer - BIONTech', hidden[1]),
-          datasetFrom(dates, dataM, filters, 'Moderna', hidden[2]),
-          datasetFrom(dates, dataAZ, filters, 'Astra-Zeneca', hidden[3]),
+          datasetFrom(db.getDates(), dataCity, filters, 'Total', hidden[0]),
+          datasetFrom(db.getDates(), dataPB, filters, 'Pfizer - BIONTech', hidden[1]),
+          datasetFrom(db.getDates(), dataM, filters, 'Moderna', hidden[2]),
+          datasetFrom(db.getDates(), dataAZ, filters, 'Astra-Zeneca', hidden[3]),
         ]
     },
     options: {
@@ -132,48 +127,20 @@ const init = async () => {
   const responseJson = await response.json();
   let rawData = responseJson['ag-grid'];
 
-  let counties = new Set();
-  let cities = new Set();
-  let centers = new Set();
-  let dates = new Set();
-  let vaccines = new Set();
-  let categories = new Set();
-  let doses = new Set(['Doza 1', 'Doza 2']);
+  db.update(rawData);
 
-  rawData.forEach(e => {
-    // don't ask - related to lc_select, try selecting ACADEMIA NAVALĂ „MIRCEA CEL BĂTRÂN without this
-    e['Nume centru'] = e['Nume centru'].replace('"', '');
+  initMultiSelect('counties', db)
+  initMultiSelect('cities', db)
+  initMultiSelect('centers', db)
+  initMultiSelect('categories', db)
+  initMultiSelect('doses', db)
 
-    counties.addSafe(e['Județ']);
-    cities.addSafe(e['Localitate']);
-    centers.addSafe(e['Nume centru']);
-    dates.addSafe(e['Data vaccinării']);
-    vaccines.addSafe(e['Produs']);
-    categories.addSafe(e['Grupa de risc']);
-  })
-
-  let filters = {
-    'counties': [],
-    'cities': [],
-    'centers': [],
-    'categories': [],
-    'doses': [],
-
-    // default hidden state for each vaccin line + total line
-    'hidden': Array.from(vaccines).map(e => false).concat(false)
-  }
-
-  initMultiSelect('counties', counties, filters, dates, rawData)
-  initMultiSelect('cities', cities, filters, dates, rawData)
-  initMultiSelect('centers', centers, filters, dates, rawData)
-  initMultiSelect('categories', categories, filters, dates, rawData)
-  initMultiSelect('doses', doses, filters, dates, rawData)
-
-  updateChart(dates, rawData, filters)
+  updateChart(db)
 
   document.querySelector('#content').style.display = 'block';
   document.querySelector('#loader').remove();
 }
 
+let db = new Db();
 let chart = undefined; // should you be writing this?
 document.addEventListener("DOMContentLoaded", init)
