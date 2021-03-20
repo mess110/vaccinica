@@ -93,6 +93,26 @@ const updateChart = (db) => {
     dataCity = dataCity.filter(e => filters.centers.includes(e['Nume centru']))
   }
   if (filters.categories.length > 0) {
+    // console.log(Array.from(db.collections.categories).sort())
+    if (filters.categories.includes('Categoria I')) {
+      let items = Array.from(db.collections.categories).filter(e => e.startsWith('Categoria I '))
+      items.forEach(e => filters.categories.push(e))
+    }
+    if (filters.categories.includes('Categoria II')) {
+      let items = Array.from(db.collections.categories).filter(e => e.startsWith('Categoria II-'))
+      items.forEach(e => filters.categories.push(e))
+    }
+    if (filters.categories.includes('Categoria III')) {
+      let items = Array.from(db.collections.categories).filter(e => e.startsWith('Categoria III-'))
+      items.forEach(e => filters.categories.push(e))
+    }
+    ['Categoria II-a', 'Categoria II-b', 'Categoria III-a', 'Categoria III-b', 'Categoria III-c'].forEach(cat => {
+      if (filters.categories.includes(cat)) {
+        let items = Array.from(db.collections.categories).filter(e => e.startsWith(cat))
+        items.forEach(e => filters.categories.push(e))
+      }
+    })
+    // console.log(filters.categories)
     dataCity = dataCity.filter(e => filters.categories.includes(e['Grupa de risc']))
   }
 

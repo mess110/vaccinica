@@ -21,6 +21,10 @@ class Db {
     data.forEach(e => {
       // don't ask - related to lc_select, try selecting ACADEMIA NAVALĂ „MIRCEA CEL BĂTRÂN without this
       e['Nume centru'] = e['Nume centru'].replace('"', '');
+      // Categoria a II a si Categoria a II-a
+      e['Grupa de risc'] = e['Grupa de risc'].replace('Categoria a II a', 'Categoria a II-a');
+      // Get rid of the 'a' between Categoria and roman numeral
+      e['Grupa de risc'] = e['Grupa de risc'].replace('Categoria a I', 'Categoria I');
 
       this.addToCollection('counties', e['Județ'])
       this.addToCollection('cities', e['Localitate'])

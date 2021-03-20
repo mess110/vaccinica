@@ -38,9 +38,14 @@ google-chome http://localhost:8000
 * [x] filter categories
 * [x] filter doses
 * [x] persist hidden states
-* [ ] shortcut for selecting all categories grouped by their number (example: select III-a with one click)
+* [x] filter cities/centers depending on current selection
+* [x] shortcut for selecting all categories grouped by their number (example: select III-a with one click)
 * [ ] positive messages
 * [ ] estimate how long until you get vaccinated
+* [ ] persist state in query params
+* [ ] ability to select time frame
+* [ ] split per months
+* [ ] show more statistics, perscentages etc
 
 ## Thanks
 
