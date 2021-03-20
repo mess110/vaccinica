@@ -1,3 +1,7 @@
+.chart-container {
+  padding-bottom: 10px;
+}
+
 .multiselect > ul {
   padding-left: 0px;
 }
@@ -46,7 +50,7 @@
   display: inline-block;
   width: 60px;
   height: 34px;
-  left: -50px;
+  /* left: -50px; */
 }
 
 .switch input {
@@ -58,8 +62,16 @@
 .switch > .text {
   position: relative;
   color: #484848;
-  left: 70px;
+  left: 68px;
   top: -10px;
+  cursor: pointer;
+}
+
+.switch > .text2 {
+  position: relative;
+  color: #484848;
+  left: 42px;
+  top: 6px;
   cursor: pointer;
 }
 

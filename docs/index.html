@@ -63,10 +63,15 @@
             </form>
 
             <form style="text-align: center">
-                <label class="switch">
+                <label class="switch" style="left: -100px;">
                     <input type="checkbox" onclick='toggleCumulative(this);'>
                     <span class="slider round"></span>
                     <span class="text">Cumulativ</span>
+                </label>
+                <label class="switch" style="top: -17px">
+                    <input type="checkbox" onclick='togglePie(this);'>
+                    <span class="slider round"></span>
+                    <span class="text2">Pie</span>
                 </label>
             </form>
 
@@ -77,10 +82,12 @@
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
         <script src="js/lc_select.min.js"></script>
         <!-- <script src="js/lc_select.js"></script> -->
 
         <script src="js/db.js"></script>
+        <script src="js/charts.js"></script>
         <script src="js/vaccinica.js"></script>
     </body>
 </html>

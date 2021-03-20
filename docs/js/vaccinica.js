@@ -40,58 +40,10 @@ const initMultiSelect = (name, db) => {
   });
 }
 
-const datasetFrom = (dates, inputData, filters, label, hidden) => {
-  array = [];
-  dates.forEach(date => {
-    let value = inputData
-      .filter(e => e['Data vaccinării'] === date)
-      .map(e => {
-        if (filters.doses.length === 0 || filters.doses.length === 2) {
-          return e['Doze administrate']
-        } else {
-          return e[filters.doses[0]]
-        }
-      })
-      .sum()
-    array.push(value)
-  })
-
-  if (filters.cumulative) {
-    let tempArray = []
-    let i = 0
-    for (e of array) {
-      let newValue = e;
-      if (i !== 0) {
-        newValue += tempArray[i - 1]
-      }
-      tempArray.push(newValue)
-      i += 1
-    }
-    array = tempArray;
-  }
-
-  return {
-    label: label,
-    data: array,
-    hidden: hidden,
-    fill: false,
-  }
-}
-
 const updateChart = (db) => {
   let filters = db.getFilters();
-  let hidden = filters.hidden;
-  if (chart !== undefined) {
-    // the hidden state can be either directly on the dataset or in its
-    // _meta attribute so we check for both
-    hidden = chart.data.datasets.map(e => {
-      let firstVal = e._meta[Object.keys(e._meta)[0]].hidden;
-      return firstVal === null ? e.hidden : firstVal;
-    })
-    chart.destroy();
-  }
-
   let data = db.getData();
+  updateUIFilter(db);
 
   if (filters.cities.length === 0 && filters.centers.length === 0) {
     if (filters.counties.length > 0) {
@@ -130,38 +82,11 @@ const updateChart = (db) => {
     data = data.filter(e => filters.categories.includes(e['Grupa de risc']))
   }
 
-  let dataPB = data
-    .filter(e => e['Produs'] == 'Pfizer - BIONTech')
-
-  let dataM = data
-    .filter(e => e['Produs'] == 'Moderna')
-
-  let dataAZ = data
-    .filter(e => e['Produs'] == 'Astra-Zeneca')
-
-  updateUIFilter(db);
-
-  let ctx = document.getElementById('myChart').getContext('2d');
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: Array.from(db.getDates()),
-        datasets: [
-          datasetFrom(db.getDates(), data, filters, 'Total', hidden[0]),
-          datasetFrom(db.getDates(), dataPB, filters, 'Pfizer - BIONTech', hidden[1]),
-          datasetFrom(db.getDates(), dataM, filters, 'Moderna', hidden[2]),
-          datasetFrom(db.getDates(), dataAZ, filters, 'Astra-Zeneca', hidden[3]),
-        ]
-    },
-    options: {
-      maintainAspectRatio: false,
-      plugins: {
-        colorschemes: {
-          scheme: 'tableau.Tableau10'
-        }
-      }
-    }
-  });
+  if (filters.pieChart) {
+    proportii(data, filters)
+  } else {
+    dozeAdministrate(data, filters)
+  }
 }
 
 const updateUIFilter = (db) => {
@@ -189,6 +114,11 @@ const updateUIFilter = (db) => {
 
 const toggleCumulative = (event) => {
   db.filters.cumulative = event.checked;
+  updateChart(db)
+}
+
+const togglePie = (event) => {
+  db.filters.pieChart = !db.filters.pieChart;
   updateChart(db)
 }
 
