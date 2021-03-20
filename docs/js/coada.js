@@ -91,20 +91,20 @@ const updateChart = (db) => {
     chart.destroy();
   }
 
-  let dataCity = db.getData();
+  let data = db.getData();
 
   if (filters.cities.length === 0 && filters.centers.length === 0) {
     if (filters.counties.length > 0) {
-      dataCity = dataCity.filter(e => filters.counties.includes(e['Județ']))
+      data = data.filter(e => filters.counties.includes(e['Județ']))
     }
   }
   if (filters.centers.length === 0) {
     if (filters.cities.length > 0) {
-      dataCity = dataCity.filter(e => filters.cities.includes(e['Localitate']))
+      data = data.filter(e => filters.cities.includes(e['Localitate']))
     }
   }
   if (filters.centers.length > 0) {
-    dataCity = dataCity.filter(e => filters.centers.includes(e['Nume centru']))
+    data = data.filter(e => filters.centers.includes(e['Nume centru']))
   }
   if (filters.categories.length > 0) {
     // console.log(Array.from(db.collections.categories).sort())
@@ -127,16 +127,16 @@ const updateChart = (db) => {
       }
     })
     // console.log(filters.categories)
-    dataCity = dataCity.filter(e => filters.categories.includes(e['Grupa de risc']))
+    data = data.filter(e => filters.categories.includes(e['Grupa de risc']))
   }
 
-  let dataPB = dataCity
+  let dataPB = data
     .filter(e => e['Produs'] == 'Pfizer - BIONTech')
 
-  let dataM = dataCity
+  let dataM = data
     .filter(e => e['Produs'] == 'Moderna')
 
-  let dataAZ = dataCity
+  let dataAZ = data
     .filter(e => e['Produs'] == 'Astra-Zeneca')
 
   updateUIFilter(db);
@@ -147,7 +147,7 @@ const updateChart = (db) => {
     data: {
         labels: Array.from(db.getDates()),
         datasets: [
-          datasetFrom(db.getDates(), dataCity, filters, 'Total', hidden[0]),
+          datasetFrom(db.getDates(), data, filters, 'Total', hidden[0]),
           datasetFrom(db.getDates(), dataPB, filters, 'Pfizer - BIONTech', hidden[1]),
           datasetFrom(db.getDates(), dataM, filters, 'Moderna', hidden[2]),
           datasetFrom(db.getDates(), dataAZ, filters, 'Astra-Zeneca', hidden[3]),
