@@ -26,6 +26,7 @@ const initMultiSelect = (name, items, filters, dates, rawData) => {
   })
 
   new lc_select(`select[name="${name}"]`, {
+    enable_search : name !== "doses",
     wrap_width : '100%',
     min_for_search: 2,
     autofocus_search: true,

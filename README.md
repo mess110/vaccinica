@@ -1,18 +1,46 @@
-# Vaccin
+# Vaccinica
+
+Downloads and presents covid data publicly available from data.gov.ro
 
 http://bit.ly/vaccinica
 
-A way to explore the https://data.gov.ro/dataset/transparenta-covid data.
+Explore https://data.gov.ro/dataset/transparenta-covid data and get informed
+of the available vaccination statistics in Romania. Would be nice to receive
+data pre March 2020.
 
 Please review the code to help me fix potential mistakes.
 
 ## Running locally
+
+Automatically download and convert the data from data.gov.ro
 
 ```
 yarn install
 yarn download
 yarn dl2json
 ```
+
+Serve `docs` folder though a http server
+
+```
+cd docs && python -m SimpleHTTPServer 8000
+google-chome http://localhost:8000
+```
+
+## Roadmap
+
+* [x] show chart
+* [x] download data with a script
+* [x] github pages
+* [x] filter counties
+* [x] filter cities
+* [x] filter centers
+* [x] filter categories
+* [x] filter doses
+* [x] persist hidden states
+* [ ] shortcut for selecting all categories grouped by their number (example: select III-a with one click)
+* [ ] positive messages
+* [ ] estimate how long until you get vaccinated
 
 ## Thanks
 
