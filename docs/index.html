@@ -18,43 +18,7 @@
         <title>vaccinica</title>
 
         <link rel="stylesheet" href="css/light.css">
-        <style type="text/css" media="all">
-            .multiselect > ul {
-                padding-left: 0px;
-            }
-
-            #loader {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                height: 100%;
-                width: 100%;
-                background-color: white;
-                z-index: 1;
-                text-align: center;
-            }
-
-            #github {
-                padding-top: 30px;
-                text-align: center;
-            }
-
-            #content {
-                display: none;
-            }
-
-            #content > h1 {
-                text-align: center;
-            }
-
-            #content > form {
-                padding-bottom: 10px;
-            }
-
-            .lcslt-disabled {
-                display: none;
-            }
-        </style>
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <div id="loader">
@@ -96,6 +60,14 @@
             <form>
                 <select name="doses" data-placeholder="Doze" multiple>
                 </select>
+            </form>
+
+            <form style="text-align: center">
+                <label class="switch">
+                    <input type="checkbox" onclick='toggleCumulative(this);'>
+                    <span class="slider round"></span>
+                    <span class="text">Cumulativ</span>
+                </label>
             </form>
 
             <div id="github">

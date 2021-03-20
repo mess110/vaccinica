@@ -56,6 +56,20 @@ const datasetFrom = (dates, inputData, filters, label, hidden) => {
     array.push(value)
   })
 
+  if (filters.cumulative) {
+    let tempArray = []
+    let i = 0
+    for (e of array) {
+      let newValue = e;
+      if (i !== 0) {
+        newValue += tempArray[i - 1]
+      }
+      tempArray.push(newValue)
+      i += 1
+    }
+    array = tempArray;
+  }
+
   return {
     label: label,
     data: array,
@@ -171,6 +185,11 @@ const updateUIFilter = (db) => {
       c.setAttribute('disabled', true)
     }
   }
+}
+
+const toggleCumulative = (event) => {
+  db.filters.cumulative = event.checked;
+  updateChart(db)
 }
 
 const init = async () => {

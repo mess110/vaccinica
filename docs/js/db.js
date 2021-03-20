@@ -44,7 +44,8 @@ class Db {
       'doses': [],
 
       // default hidden state for each vaccin line + total line
-      'hidden': Array.from(this.getVaccines()).map(e => false).concat(false)
+      'hidden': Array.from(this.getVaccines()).map(e => false).concat(false),
+      'cumulative': false
     }
   }
 
