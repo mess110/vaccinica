@@ -15,14 +15,16 @@ const initMultiSelect = (name, db) => {
   Array.from(db.getCollection(name)).sort().forEach(e => {
     let option = document.createElement('option');
     option.setAttribute('value', e);
+    // option.setAttribute('disabled', 0);
     option.text = e;
     select.appendChild(option)
   })
 
   new lc_select(`select[name="${name}"]`, {
-    enable_search : name !== "doses",
-    wrap_width : '100%',
-    min_for_search: 2,
+    enable_search: name !== "doses",
+    wrap_width: '100%',
+    // min_for_search: 2,
+    // max_opts: 1,
     autofocus_search: true,
     addit_classes : ['multiselect'],
     on_change : (new_value, target_field) => {
@@ -77,11 +79,15 @@ const updateChart = (db) => {
 
   let dataCity = db.getData();
 
-  if (filters.counties.length > 0) {
-    dataCity = dataCity.filter(e => filters.counties.includes(e['Județ']))
+  if (filters.cities.length === 0 && filters.centers.length === 0) {
+    if (filters.counties.length > 0) {
+      dataCity = dataCity.filter(e => filters.counties.includes(e['Județ']))
+    }
   }
-  if (filters.cities.length > 0) {
-    dataCity = dataCity.filter(e => filters.cities.includes(e['Localitate']))
+  if (filters.centers.length === 0) {
+    if (filters.cities.length > 0) {
+      dataCity = dataCity.filter(e => filters.cities.includes(e['Localitate']))
+    }
   }
   if (filters.centers.length > 0) {
     dataCity = dataCity.filter(e => filters.centers.includes(e['Nume centru']))
@@ -98,6 +104,8 @@ const updateChart = (db) => {
 
   let dataAZ = dataCity
     .filter(e => e['Produs'] == 'Astra-Zeneca')
+
+  updateUIFilter(db);
 
   let ctx = document.getElementById('myChart').getContext('2d');
   chart = new Chart(ctx, {
@@ -120,6 +128,29 @@ const updateChart = (db) => {
       }
     }
   });
+}
+
+const updateUIFilter = (db) => {
+  let cities = document.querySelector(`select[name="cities"]`);
+  let centers = document.querySelector(`select[name="centers"]`);
+
+  selectableCities = db.getSelectableCities()
+  for (let c of cities.children) {
+    if (selectableCities.indexOf(c.value) !== -1) {
+      c.removeAttribute('disabled')
+    } else {
+      c.setAttribute('disabled', true)
+    }
+  }
+
+  selectableCenters = db.getSelectableCenters()
+  for (let c of centers.children) {
+    if (selectableCenters.indexOf(c.value) !== -1) {
+      c.removeAttribute('disabled')
+    } else {
+      c.setAttribute('disabled', true)
+    }
+  }
 }
 
 const init = async () => {

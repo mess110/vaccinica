@@ -14,7 +14,9 @@ class Db {
       'categories': new Set(),
       'doses': new Set(['Doza 1', 'Doza 2'])
     };
-    this.meta = {};
+    this.citiesInCounties = {};
+    this.centersInCounties = {};
+    this.centersInCities = {};
 
     data.forEach(e => {
       // don't ask - related to lc_select, try selecting ACADEMIA NAVALĂ „MIRCEA CEL BĂTRÂN without this
@@ -26,6 +28,8 @@ class Db {
       this.addToCollection('dates', e['Data vaccinării'])
       this.addToCollection('vaccines', e['Produs'])
       this.addToCollection('categories', e['Grupa de risc'])
+
+      this.metaHierarchy(e)
     })
 
     this.filters = {
@@ -37,6 +41,29 @@ class Db {
 
       // default hidden state for each vaccin line + total line
       'hidden': Array.from(this.getVaccines()).map(e => false).concat(false)
+    }
+  }
+
+  metaHierarchy(e) {
+    const county = e['Județ'];
+    if (county === '') {
+      return
+    }
+    const city = e['Localitate'];
+    if (this.citiesInCounties[county] instanceof Set) {
+      this.citiesInCounties[county].add(e['Localitate'])
+    } else {
+      this.citiesInCounties[county] = new Set([e['Localitate']])
+    }
+    if (this.centersInCounties[county] instanceof Set) {
+      this.centersInCounties[county].add(e['Nume centru'])
+    } else {
+      this.centersInCounties[county] = new Set([e['Nume centru']])
+    }
+    if (this.centersInCities[city] instanceof Set) {
+      this.centersInCities[city].add(e['Nume centru'])
+    } else {
+      this.centersInCities[city] = new Set([e['Nume centru']])
     }
   }
 
@@ -78,6 +105,40 @@ class Db {
 
   getFilters() {
     return this.filters;
+  }
+
+  getSelectableCities() {
+    if (db.filters.counties.length === 0) {
+      return Array.from(this.getCities())
+    }
+    let cities = []
+    for (let county of db.filters.counties) {
+      for (let city of Array.from(this.citiesInCounties[county])) {
+        cities.push(city)
+      }
+    }
+    return cities;
+  }
+
+  getSelectableCenters() {
+    if (db.filters.counties.length === 0 && db.filters.cities.length === 0) {
+      return Array.from(this.getCenters())
+    }
+    let centers = []
+    if (db.filters.cities.length === 0) {
+      for (let county of db.filters.counties) {
+        for (let center of Array.from(this.centersInCounties[county])) {
+          centers.push(center)
+        }
+      }
+    } else {
+      for (let city of db.filters.cities) {
+        for (let center of Array.from(this.centersInCities[city])) {
+          centers.push(center)
+        }
+      }
+    }
+    return centers;
   }
 
   addToCollection(which, item) {
