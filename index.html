@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="title" content="vaccinica">
+        <meta name="description" content="Statistici vaccinare Romania">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://mess110.github.io/vaccinica/">
+        <meta property="og:title" content="vaccinica">
+        <meta property="og:description" content="Statistici vaccinare Romania">
+
+        <meta property="twitter:url" content="https://mess110.github.io/vaccinica/">
+        <meta property="twitter:title" content="vaccinica">
+        <meta property="twitter:description" content="Statistici vaccinare Romania">
+
+        <title>vaccinica</title>
+
+        <link rel="stylesheet" href="css/light.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div id="loader">
+            <img src="img/loading.gif" />
+            <h1>se încarcă</h1>
+        </div>
+
+        <div id="content">
+            <h1>Statistici vaccinare România</h1>
+
+            <div class="chart-container" style="position: relative; height:40vh; width:98vw">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <form>
+                <select name="counties" data-placeholder="Județ" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="cities" data-placeholder="Localitate" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="centers" data-placeholder="Nume centru" multiple>
+                </select>
+            </form>
+            <form>
+                <select name="categories" data-placeholder="Grupa de risc" multiple>
+                    <option value="Categoria I">Categoria I</option>
+                    <option value="Categoria II">Categoria II</option>
+                    <option value="Categoria II-a">Categoria II-a</option>
+                    <option value="Categoria II-b">Categoria II-b</option>
+                    <option value="Categoria III">Categoria III</option>
+                    <option value="Categoria III-a">Categoria III-a</option>
+                    <option value="Categoria III-b">Categoria III-b</option>
+                    <option value="Categoria III-c">Categoria III-c</option>
+                </select>
+            </form>
+            <form>
+                <select name="doses" data-placeholder="Doze" multiple>
+                </select>
+            </form>
+
+            <div class="flex-container">
+                <div class="flex-child magenta">
+                    <label class="switch">
+                        <input type="checkbox" onclick='toggleCumulative(this);'>
+                        <span class="slider round"></span>
+                        <span class="text">Cumulativ</span>
+                    </label>
+                </div>
+
+                <div class="flex-child green">
+                    <label class="switch">
+                        <input type="checkbox" onclick='togglePie(this);'>
+                        <span class="slider round"></span>
+                        <span class="text">Plăcintă</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div id="footer">
+                <div>
+                    <a href="https://data.gov.ro/dataset/transparenta-covid" target="_blank">Sursă date</a>
+                    -
+                    <a href="https://github.com/mess110/vaccinica" target="_blank">Sursă cod</a>
+                </div>
+                <div>Nu folosesc cookies</div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
+        <script src="js/lc_select.min.js"></script>
+        <!-- <script src="js/lc_select.js"></script> -->
+
+        <script src="js/db.js"></script>
+        <script src="js/charts.js"></script>
+        <script src="js/vaccinica.js"></script>
+    </body>
+</html>
