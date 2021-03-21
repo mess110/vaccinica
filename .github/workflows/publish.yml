@@ -1,8 +1,8 @@
-name: Publish website
+name: Publish website test change
 
 on:
   schedule:
-    - cron:  '40 * * * *' # run nightly
+    - cron:  '45 * * * *' # run nightly
 
 jobs:
   build-and-deploy:
