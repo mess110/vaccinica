@@ -3,3 +3,4 @@ node_modules/
 *.xlsx#
 downloads/*.json
 HELLO.md
+docs/data/*.json

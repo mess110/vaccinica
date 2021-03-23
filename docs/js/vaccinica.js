@@ -139,6 +139,11 @@ const init = async () => {
 
   document.querySelector('#content').style.display = 'block';
   document.querySelector('#loader').remove();
+
+  let lastDataUpdateOn = new Date(Array.from(db.getDates()).sort().slice(-1)[0]);
+  lastDataUpdateOn.setDate(lastDataUpdateOn.getDate() + 1);
+  lastDataUpdateOn = lastDataUpdateOn.toISOString().split('T')[0];
+  document.querySelector('#lastDataUpdateOn').innerHTML = ` - ${lastDataUpdateOn}`;
 }
 
 let db = new Db();
