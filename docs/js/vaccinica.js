@@ -141,12 +141,24 @@ const updateUIFilter = (db) => {
   }
 }
 
+const initCumulative = () => {
+  db.filters.cumulative = locationHasAttribute("cumulative", "yes")
+  document.querySelector(`input[name="cumulative"]`).checked = db.filters.cumulative
+}
+
+const initPie = () => {
+  db.filters.pieChart = locationHasAttribute("pie", "yes")
+  document.querySelector(`input[name="pie"]`).checked = db.filters.pieChart
+}
+
 const toggleCumulative = (event) => {
+  pushUrlState("cumulative", event.checked ? "yes" : "")
   db.filters.cumulative = event.checked;
   updateChart(db)
 }
 
 const togglePie = (event) => {
+  pushUrlState("pie", event.checked ? "yes" : "")
   db.filters.pieChart = !db.filters.pieChart;
   updateChart(db)
 }
@@ -163,6 +175,9 @@ const init = async () => {
   initMultiSelect('centers', db)
   initMultiSelect('categories', db)
   initMultiSelect('doses', db)
+
+  initCumulative()
+  initPie()
 
   updateChart(db)
 
