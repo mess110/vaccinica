@@ -8,8 +8,6 @@ Array.prototype.includes = function(e) {
   return this.indexOf(e) !== -1
 }
 
-// TODO: remove dates and rawData parms from here, its just a mess
-// maybe create a storage object somewhere
 const initMultiSelect = (name, db) => {
   let select = document.querySelector(`select[name="${name}"]`);
   Array.from(db.getCollection(name)).sort().forEach(e => {
