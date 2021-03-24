@@ -2,7 +2,7 @@ name: Publish website
 
 on:
   schedule:
-    - cron:  '0 1 * * *' # run nightly
+    - cron:  '20 */6 * * *' # At minute 20 past every 6th hour.
 
 jobs:
   build-and-deploy:

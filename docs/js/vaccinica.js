@@ -9,7 +9,6 @@ Array.prototype.includes = function (e) {
 }
 
 const pushUrlState = (name, value) => {
-
   var url = new URL(document.location)
   url.searchParams.delete(name)
   if (value) {
@@ -28,8 +27,6 @@ const locationHasAttribute = (name, value) => {
 }
 
 
-// TODO: remove dates and rawData parms from here, its just a mess
-// maybe create a storage object somewhere
 const initMultiSelect = (name, db) => {
   let select = document.querySelector(`select[name="${name}"]`);
 
