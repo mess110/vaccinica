@@ -47,14 +47,6 @@
             </form>
             <form>
                 <select name="categories" data-placeholder="Grupa de risc" multiple>
-                    <option value="Categoria I">Categoria I</option>
-                    <option value="Categoria II">Categoria II</option>
-                    <option value="Categoria II-a">Categoria II-a</option>
-                    <option value="Categoria II-b">Categoria II-b</option>
-                    <option value="Categoria III">Categoria III</option>
-                    <option value="Categoria III-a">Categoria III-a</option>
-                    <option value="Categoria III-b">Categoria III-b</option>
-                    <option value="Categoria III-c">Categoria III-c</option>
                 </select>
             </form>
             <form>
@@ -65,7 +57,7 @@
             <div class="flex-container">
                 <div class="flex-child magenta">
                     <label class="switch">
-                        <input type="checkbox" onclick='toggleCumulative(this);'>
+                        <input type="checkbox" name="cumulative" onclick='toggleCumulative(this);' >
                         <span class="slider round"></span>
                         <span class="text">Cumulativ</span>
                     </label>
@@ -73,7 +65,7 @@
 
                 <div class="flex-child green">
                     <label class="switch">
-                        <input type="checkbox" onclick='togglePie(this);'>
+                        <input type="checkbox" name="pie" onclick='togglePie(this);'>
                         <span class="slider round"></span>
                         <span class="text">Plăcintă</span>
                     </label>
