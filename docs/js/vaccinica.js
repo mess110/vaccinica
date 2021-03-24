@@ -4,18 +4,49 @@ Array.prototype.sum = function () {
   }, 0)
 }
 
-Array.prototype.includes = function(e) {
+Array.prototype.includes = function (e) {
   return this.indexOf(e) !== -1
 }
+
+const pushUrlState = (name, value) => {
+
+  var url = new URL(document.location)
+  url.searchParams.delete(name)
+  if (value) {
+    if (Array.isArray(value)) {
+      for (val of value) url.searchParams.append(name, val)
+    }
+    else {
+      url.searchParams.set(name, value)
+    }
+  }
+  window.history.pushState({}, '', url)
+}
+
+const locationHasAttribute = (name, value) => {
+  return new URL(document.location).searchParams.getAll(name).includes(value)
+}
+
 
 // TODO: remove dates and rawData parms from here, its just a mess
 // maybe create a storage object somewhere
 const initMultiSelect = (name, db) => {
   let select = document.querySelector(`select[name="${name}"]`);
-  Array.from(db.getCollection(name)).sort().forEach(e => {
+
+  let options = Array.from(db.getCollection(name)).sort()
+  if (name == "categories") {
+    options.unshift(...["Categoria I", "Categoria II", "Categoria II-a", "Categoria II-b", "Categoria III", "Categoria III-a", "Categoria III-b", "Categoria III-c"])
+  }
+
+  options.forEach(e => {
     let option = document.createElement('option');
     option.setAttribute('value', e);
-    // option.setAttribute('disabled', 0);
+
+    if (locationHasAttribute(name, e)) {
+      db.getFilters()[name].push(e);
+      option.setAttribute('selected', 1)
+    }
+
     option.text = e;
     select.appendChild(option)
   })
@@ -26,16 +57,17 @@ const initMultiSelect = (name, db) => {
     // min_for_search: 2,
     // max_opts: 1,
     autofocus_search: true,
-    addit_classes : ['multiselect'],
-    on_change : (new_value, target_field) => {
+    addit_classes: ['multiselect'],
+    on_change: (new_value, target_field) => {
+      pushUrlState(name, new_value)
       db.getFilters()[name] = new_value;
       updateChart(db);
     },
-    labels : [
-        'căutare',
-        'adaugă',
-        'alege',
-        '.. nema ..',
+    labels: [
+      'căutare',
+      'adaugă',
+      'alege',
+      '.. nema ..',
     ],
   });
 }
