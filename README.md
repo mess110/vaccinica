@@ -27,6 +27,15 @@ cd docs && python -m SimpleHTTPServer 8000
 google-chome http://localhost:8000
 ```
 
+### Docker
+
+Alternatively, if you have Docker installed, you can run the application this way:
+```bash
+./scripts/run.sh
+```
+
+This will instantiate a local container starting from the same image used for deployment on Github pages and execute the yarn commands above. If you are using VS Code, you can also hook it to the workspace inside the container.
+
 ## Roadmap
 
 * [x] show chart
@@ -45,7 +54,7 @@ google-chome http://localhost:8000
 * [ ] persist state in query params
 * [ ] ability to select time frame
 * [ ] split per months
-* [ ] show more statistics, perscentages etc
+* [ ] show more statistics, percentages etc
 
 ## Thanks
 
