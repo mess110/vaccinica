@@ -51,10 +51,11 @@ This will instantiate a local container starting from the same image used for de
 * [x] shortcut for selecting all categories grouped by their number (example: select III-a with one click)
 * [ ] positive messages
 * [ ] estimate how long until you get vaccinated
-* [ ] persist state in query params
+* [x] persist state in query params
 * [ ] ability to select time frame
 * [ ] split per months
 * [ ] show more statistics, percentages etc
+* [x] Dockerfile
 
 ## Thanks
 
