@@ -2,8 +2,8 @@
 
 const fs = require('fs')
 const path = require('path')
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 const excelToJson = require('convert-excel-to-json')
 
 // get number of files downloaded today from scripts/download.sh
@@ -67,7 +67,7 @@ const init = async () => {
   for (let fileName of processedFiles) {
     let temp = JSON.parse(fs.readFileSync(fileName))
     if (output === undefined) {
-      output = temp;
+      output = temp
     } else {
       for (let item of temp['ag-grid']) {
         output['ag-grid'].push(item)
