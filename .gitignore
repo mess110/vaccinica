@@ -4,3 +4,4 @@ node_modules/
 downloads/*.json
 HELLO.md
 docs/data/*.json
+old_downloads/
