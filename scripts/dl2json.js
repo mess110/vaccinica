@@ -2,29 +2,26 @@
 
 const fs = require('fs')
 const path = require('path')
-
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const excelToJson = require('convert-excel-to-json')
 
-// gets the number of months since march (including march)
-const monthsSinceStart = () => {
-  const march = new Date('2021-3-1 UTC')
-  const today = new Date()
-
-  return (today.getFullYear() - march.getFullYear()) * 12
-    - march.getMonth()
-    + today.getMonth()
-    + 1
+// get number of files downloaded today from scripts/download.sh
+// by identifying how many times the download command was called
+const filesDownloadedToday = async () => {
+  cmd = 'cat scripts/download.sh | grep "download \\"https://data.gov.ro" | wc -l'
+  try {
+    const { stdout, stderr } = await exec(cmd)
+    const stripped = stdout.replace(/\r?\n|\r/g, " ")
+    return parseInt(stripped)
+  } catch (e) {
+    throw e
+  }
 }
-
-const dowloadsDir = 'downloads'
-const xlsxFiles = fs.readdirSync(dowloadsDir)
-  .filter(f => f.endsWith('.xlsx'))
-  .sort()
-  .reverse()
 
 const processFile = (fileName) => {
   const latestDownloadedFileName = fileName
-  const latestXlsxPath = path.join(dowloadsDir, latestDownloadedFileName)
+  const latestXlsxPath = path.join(downloadsDir, latestDownloadedFileName)
 
   console.log(`Converting ${latestXlsxPath} to json`)
   const jsonObj = excelToJson({
@@ -40,41 +37,47 @@ const processFile = (fileName) => {
   const data = JSON.stringify(jsonObj)
 
   const outputFileName = latestDownloadedFileName.replace(/\.[^.]+$/, '.json')
-  const outputPath = path.join(dowloadsDir, outputFileName)
+  const outputPath = path.join(downloadsDir, outputFileName)
   console.log(`Writing ${outputPath}`)
   fs.writeFileSync(outputPath, data)
 
   return outputPath
 }
 
-const MAX_MONTHS = 2
+const init = async () => {
+  let downloadedMonths = await filesDownloadedToday()
+  console.log(`Found ${downloadedMonths} downloaded files`)
 
-let processedFiles = []
-for (let i = 0, len = monthsSinceStart() + 5; i < len; i++) {
-  if (i > MAX_MONTHS - 1) {
-    // stop after 2 months because we can't auto download the "next" month
-    // because we don't know the key. after editing download.sh, increment
-    // the max amount of months to process
-    break
+  const xlsxFiles = fs.readdirSync(downloadsDir)
+    .filter(f => f.endsWith('.xlsx'))
+    .sort()
+    .reverse()
+
+  let processedFiles = []
+  for (let i = 0, len = downloadedMonths; i < len; i++) {
+    let processedFilePath = processFile(xlsxFiles[i])
+    processedFiles.push(processedFilePath)
   }
-  processedFiles.push(processFile(xlsxFiles[i]))
-}
 
-console.log("Merging files:")
-console.log(processedFiles)
+  console.log("Merging files:")
+  console.log(processedFiles)
 
-const latestPath = path.join('docs', 'data', 'latest.json')
-let output = undefined
-for (let fileName of processedFiles) {
-  let temp = JSON.parse(fs.readFileSync(fileName))
-  if (output === undefined) {
-    output = temp;
-  } else {
-    for (let item of temp['ag-grid']) {
-      output['ag-grid'].push(item)
+  const latestPath = path.join('docs', 'data', 'latest.json')
+  let output = undefined
+  for (let fileName of processedFiles) {
+    let temp = JSON.parse(fs.readFileSync(fileName))
+    if (output === undefined) {
+      output = temp;
+    } else {
+      for (let item of temp['ag-grid']) {
+        output['ag-grid'].push(item)
+      }
     }
   }
+  console.log(`Saving merged files to ${latestPath}`)
+  const data = JSON.stringify(output)
+  fs.writeFileSync(latestPath, data)
 }
-console.log(`Saving merged files to ${latestPath}`)
-const data = JSON.stringify(output)
-fs.writeFileSync(latestPath, data)
+
+const downloadsDir = 'downloads'
+init()
