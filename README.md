@@ -49,13 +49,13 @@ This will instantiate a local container starting from the same image used for de
 * [x] persist hidden states
 * [x] filter cities/centers depending on current selection
 * [x] shortcut for selecting all categories grouped by their number (example: select III-a with one click)
-* [ ] positive messages
-* [ ] estimate how long until you get vaccinated
 * [x] persist state in query params
-* [ ] ability to select time frame
-* [ ] split per months
-* [ ] show more statistics, percentages etc
+* [x] support many months
 * [x] Dockerfile
+* [ ] ability to select time range
+* [ ] estimate how long until you get vaccinated
+* [ ] automatically get list of available months in download.sh
+* [ ] show more stats and interesting facts
 
 ## Thanks
 
